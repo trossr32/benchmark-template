@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Benchy": {
+      "commandName": "Project",
+      "commandLineArgs": "test"
+    }
+  }
+}

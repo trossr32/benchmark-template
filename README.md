@@ -1,5 +1,5 @@
 # benchmarking console app example
-An .net core console app that uses BenchmarkDotNet to benchmark code performance, etc: https://benchmarkdotnet.org/
+A .net core console app that uses BenchmarkDotNet to benchmark code performance, etc: https://benchmarkdotnet.org/
 
 ## Description
 To run, open Powershell at the Benchy.Console project directory and run:

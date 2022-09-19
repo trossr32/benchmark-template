@@ -3,77 +3,75 @@ using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Running;
 using Microsoft.Extensions.Logging;
 
-namespace Benchy.Services
+namespace Benchy.Services;
+
+public interface IBenchmarkService
 {
-    public interface IBenchmarkService
+    Task Process();
+}
+
+public class BenchmarkService : IBenchmarkService
+{
+    private readonly ILogger<BenchmarkService> _logger;
+
+    public BenchmarkService(ILogger<BenchmarkService> logger)
     {
-        Task Process();
+        _logger = logger;
     }
 
-    public class BenchmarkService : IBenchmarkService
+    public async Task Process()
     {
-        private readonly ILogger<BenchmarkService> _logger;
+        var summary = BenchmarkRunner.Run<StringBench>();
+    }
+}
 
-        public BenchmarkService(ILogger<BenchmarkService> logger)
+/// <summary>
+/// Benchmarks StringBuilder vs String.Create using Spans to deconstruct a string and put back together with a space every 4th character.
+/// </summary>
+public class StringBench
+{
+    private const string UnformattedKey = "ifuahsdfiuahsdifuhsaidufhasiudfhasiudhfiasuhdfisuahdfiasuhdfx";
+
+    [Benchmark]
+    public void StringBuilder_Test()
+    {
+        var result = new StringBuilder();
+        int currentPosition = 0;
+        while (currentPosition + 4 < UnformattedKey.Length)
         {
-            _logger = logger;
+            result.Append(UnformattedKey.Substring(currentPosition, 4)).Append(" ");
+            currentPosition += 4;
+        }
+        if (currentPosition < UnformattedKey.Length)
+        {
+            result.Append(UnformattedKey.Substring(currentPosition));
         }
 
-        public async Task Process()
-        {
-            var summary = BenchmarkRunner.Run<StringBench>();
-        }
+        var solution = result.ToString().ToLowerInvariant();
     }
 
-    /// <summary>
-    /// Benchmarks StringBuilder vs String.Create using Spans to deconstruct a string and put back together with a space every 4th character.
-    /// </summary>
-    public class StringBench
+    [Benchmark]
+    public void StringCreate_Test()
     {
-        private const string UnformattedKey = "ifuahsdfiuahsdifuhsaidufhasiudfhasiudhfiasuhdfisuahdfiasuhdfx";
+        var length = (int)Math.Floor((decimal)UnformattedKey.Length / 4) + UnformattedKey.Length;
 
-        [Benchmark]
-        public void StringBuilder_Test()
+        var solution = string.Create(length, UnformattedKey, (chars, state) =>
         {
-            var result = new StringBuilder();
-            int currentPosition = 0;
-            while (currentPosition + 4 < UnformattedKey.Length)
+            var position = 0;
+            var marker = 0;
+
+            while (position < length)
             {
-                result.Append(UnformattedKey.Substring(currentPosition, 4)).Append(" ");
-                currentPosition += 4;
+                var toCopy = state.Length - marker > 4 ? 4 : state.Length - marker;
+
+                state.AsSpan().Slice(marker, toCopy).CopyTo(chars[position..]);
+
+                position += toCopy;
+                marker += toCopy;
+
+                if (position < length)
+                    chars[position++] = ' ';
             }
-            if (currentPosition < UnformattedKey.Length)
-            {
-                result.Append(UnformattedKey.Substring(currentPosition));
-            }
-
-            var solution = result.ToString().ToLowerInvariant();
-        }
-
-        [Benchmark]
-        public void StringCreate_Test()
-        {
-            var length = (int)Math.Floor((decimal)UnformattedKey.Length / 4) + UnformattedKey.Length;
-
-            var solution = string.Create(length, UnformattedKey, (chars, state) =>
-            {
-                var position = 0;
-                var marker = 0;
-
-                while (position < length)
-                {
-                    var toCopy = state.Length - marker > 4 ? 4 : state.Length - marker;
-
-                    state.AsSpan().Slice(marker, toCopy).CopyTo(chars[position..]);
-
-                    position += toCopy;
-                    marker += toCopy;
-
-                    if (position < length)
-                        chars[position++] = ' ';
-                }
-            }).ToLowerInvariant();
-        }
+        }).ToLowerInvariant();
     }
-
 }

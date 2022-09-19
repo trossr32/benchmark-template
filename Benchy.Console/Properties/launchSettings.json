@@ -2,7 +2,7 @@
   "profiles": {
     "Benchy": {
       "commandName": "Project",
-      "commandLineArgs": "test"
+      "commandLineArgs": "benchmark"
     }
   }
 }

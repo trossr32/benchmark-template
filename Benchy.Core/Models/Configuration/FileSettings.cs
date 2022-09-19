@@ -1,7 +1,6 @@
-﻿namespace Benchy.Core.Models.Configuration
+﻿namespace Benchy.Core.Models.Configuration;
+
+public class FileSettings
 {
-    public class FileSettings
-    {
-        public string LogDirectory { get; set; }
-    }
+    public string LogDirectory { get; set; }
 }

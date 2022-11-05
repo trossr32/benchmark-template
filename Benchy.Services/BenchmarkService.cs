@@ -28,6 +28,7 @@ public class BenchmarkService : IBenchmarkService
 /// <summary>
 /// Benchmarks StringBuilder vs String.Create using Spans to deconstruct a string and put back together with a space every 4th character.
 /// </summary>
+[MemoryDiagnoser]
 public class StringBench
 {
     private const string UnformattedKey = "ifuahsdfiuahsdifuhsaidufhasiudfhasiudhfiasuhdfisuahdfiasuhdfx";

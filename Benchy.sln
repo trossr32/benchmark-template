@@ -1,13 +1,19 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30320.27
+# Visual Studio Version 17
+VisualStudioVersion = 17.3.32929.385
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Benchy.Console", "Benchy.Console\Benchy.Console.csproj", "{937CF62C-C1C1-4A03-83BC-81E3CEC5878C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Benchy.Console", "Benchy.Console\Benchy.Console.csproj", "{937CF62C-C1C1-4A03-83BC-81E3CEC5878C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Benchy.Core", "Benchy.Core\Benchy.Core.csproj", "{A63E83F0-71A7-45FE-9423-F9B1378456E2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Benchy.Core", "Benchy.Core\Benchy.Core.csproj", "{A63E83F0-71A7-45FE-9423-F9B1378456E2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Benchy.Services", "Benchy.Services\Benchy.Services.csproj", "{952571FC-DBDC-43BD-A75F-7DFC2FE8AF4B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Benchy.Services", "Benchy.Services\Benchy.Services.csproj", "{952571FC-DBDC-43BD-A75F-7DFC2FE8AF4B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Assets", "Assets", "{BF8D087D-1328-4C28-8129-80B50EE6CCBD}"
+	ProjectSection(SolutionItems) = preProject
+		LICENSE = LICENSE
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -12,4 +12,4 @@ Benchmarking results will be output to the terminal window and also to a new cre
 
 ## Which framework?
 
-The main branch is up to date with net6.0, use branch _feature/net7.0_ to benchamrk net7.0 code
+The main branch is up to date with .net 6, use branch **feature/net7.0** to benchmark .net 7 code

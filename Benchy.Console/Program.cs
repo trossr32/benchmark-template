@@ -4,12 +4,12 @@ using Microsoft.Extensions.Hosting;
 using Serilog;
 
 using var host = Host.CreateDefaultBuilder(args)
-    .ConfigureServices((hostContext, services) =>
+    .ConfigureServices((_, services) =>
     {
         services.AddOptions();
         services.AddSingleton<BenchmarkService>();
     })
-    .ConfigureLogging((hostContext, logging) =>
+    .ConfigureLogging((_, logging) =>
     {
         logging.AddSerilog(dispose: true);
     })
@@ -20,6 +20,6 @@ Log.Logger = new LoggerConfiguration()
     .CreateLogger();
 
 var b = host.Services.GetService<BenchmarkService>();
-await b!.Process();
+b!.Process();
 
 await host.RunAsync();

@@ -1,17 +1,14 @@
 ﻿using System.Text;
 using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Running;
-using Microsoft.Extensions.Logging;
 
 namespace Benchy.Console;
 
-public class BenchmarkService(ILogger<BenchmarkService> logger)
+public class BenchmarkService
 {
-    private readonly ILogger<BenchmarkService> _logger = logger;
-
-    public async Task Process()
+    public void Process()
     {
-        var summary = BenchmarkRunner.Run<StringBench>();
+        BenchmarkRunner.Run<Bench>();
     }
 }
 
@@ -19,7 +16,7 @@ public class BenchmarkService(ILogger<BenchmarkService> logger)
 /// Benchmarks StringBuilder vs String.Create using Spans to deconstruct a string and put back together with a space every 4th character.
 /// </summary>
 [MemoryDiagnoser]
-public class StringBench
+public class Bench
 {
     private const string UnformattedKey = "ifuahsdfiuahsdifuhsaidufhasiudfhasiudhfiasuhdfisuahdfiasuhdfx";
 
@@ -31,16 +28,14 @@ public class StringBench
 
         while (currentPosition + 4 < UnformattedKey.Length)
         {
-            result.Append(UnformattedKey.Substring(currentPosition, 4)).Append(" ");
+            result.Append(UnformattedKey.Substring(currentPosition, 4)).Append(' ');
             currentPosition += 4;
         }
         
         if (currentPosition < UnformattedKey.Length)
-        {
             result.Append(UnformattedKey[currentPosition..]);
-        }
 
-        var solution = result.ToString().ToLowerInvariant();
+        _ = result.ToString().ToLowerInvariant();
     }
 
     [Benchmark]
@@ -48,7 +43,7 @@ public class StringBench
     {
         var length = (int)Math.Floor((decimal)UnformattedKey.Length / 4) + UnformattedKey.Length;
 
-        var solution = string.Create(length, UnformattedKey, (chars, state) =>
+        _ = string.Create(length, UnformattedKey, (chars, state) =>
         {
             var position = 0;
             var marker = 0;

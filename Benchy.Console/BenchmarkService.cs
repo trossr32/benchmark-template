@@ -3,21 +3,11 @@ using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Running;
 using Microsoft.Extensions.Logging;
 
-namespace Benchy.Services;
+namespace Benchy.Console;
 
-public interface IBenchmarkService
+public class BenchmarkService(ILogger<BenchmarkService> logger)
 {
-    Task Process();
-}
-
-public class BenchmarkService : IBenchmarkService
-{
-    private readonly ILogger<BenchmarkService> _logger;
-
-    public BenchmarkService(ILogger<BenchmarkService> logger)
-    {
-        _logger = logger;
-    }
+    private readonly ILogger<BenchmarkService> _logger = logger;
 
     public async Task Process()
     {
@@ -37,15 +27,17 @@ public class StringBench
     public void StringBuilder_Test()
     {
         var result = new StringBuilder();
-        int currentPosition = 0;
+        var currentPosition = 0;
+
         while (currentPosition + 4 < UnformattedKey.Length)
         {
             result.Append(UnformattedKey.Substring(currentPosition, 4)).Append(" ");
             currentPosition += 4;
         }
+        
         if (currentPosition < UnformattedKey.Length)
         {
-            result.Append(UnformattedKey.Substring(currentPosition));
+            result.Append(UnformattedKey[currentPosition..]);
         }
 
         var solution = result.ToString().ToLowerInvariant();
